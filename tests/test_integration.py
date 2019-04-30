@@ -182,7 +182,7 @@ class IntegrationTestCase(ESTestCase, TestCase):
         text_type = 'string' if ES_MAJOR_VERSION == 2 else 'text'
 
         test_index = DSLIndex('test_index').settings(**index_settings)
-        test_index.doc_type(CarDocument)
+        test_index.document(CarDocument)
 
         index_dict = test_index.to_dict()
 
@@ -193,7 +193,7 @@ class IntegrationTestCase(ESTestCase, TestCase):
                 'analyzer': {
                     'html_strip': {
                         'tokenizer': 'standard',
-                        'filter': ['standard', 'lowercase',
+                        'filter': ['lowercase',
                                    'stop', 'snowball'],
                         'type': 'custom',
                         'char_filter': ['html_strip']
@@ -202,38 +202,36 @@ class IntegrationTestCase(ESTestCase, TestCase):
             }
         })
         self.assertEqual(index_dict['mappings'], {
-            'doc': {
-                'properties': {
-                    'ads': {
-                        'type': 'nested',
-                        'properties': {
-                            'description': {
-                                'type': text_type, 'analyzer':
-                                'html_strip'
-                            },
-                            'pk': {'type': 'integer'},
-                            'title': {'type': text_type}
+            'properties': {
+                'ads': {
+                    'type': 'nested',
+                    'properties': {
+                        'description': {
+                            'type': text_type, 'analyzer':
+                            'html_strip'
                         },
+                        'pk': {'type': 'integer'},
+                        'title': {'type': text_type}
                     },
-                    'categories': {
-                        'type': 'nested',
-                        'properties': {
-                            'title': {'type': text_type},
-                            'slug': {'type': text_type},
-                            'icon': {'type': text_type}
-                        },
+                },
+                'categories': {
+                    'type': 'nested',
+                    'properties': {
+                        'title': {'type': text_type},
+                        'slug': {'type': text_type},
+                        'icon': {'type': text_type}
                     },
-                    'manufacturer': {
-                        'type': 'object',
-                        'properties': {
-                            'country': {'type': text_type},
-                            'name': {'type': text_type}
-                        },
+                },
+                'manufacturer': {
+                    'type': 'object',
+                    'properties': {
+                        'country': {'type': text_type},
+                        'name': {'type': text_type}
                     },
-                    'name': {'type': text_type},
-                    'launched': {'type': 'date'},
-                    'type': {'type': text_type}
-                }
+                },
+                'name': {'type': text_type},
+                'launched': {'type': 'date'},
+                'type': {'type': text_type}
             }
         })
 

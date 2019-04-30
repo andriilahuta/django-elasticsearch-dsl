@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from elasticsearch_dsl import GeoPoint, MetaField
+from elasticsearch_dsl import GeoPoint
 from mock import patch
 
 from django_elasticsearch_dsl import fields
@@ -43,9 +43,6 @@ class CarDocument(DocType):
     def prepare_color(self, instance):
         return "blue"
 
-    class Meta:
-        doc_type = 'car_document'
-
     class Django:
         fields = ['name', 'price']
         model = Car
@@ -53,7 +50,6 @@ class CarDocument(DocType):
 
     class Index:
         name = 'car_index'
-        doc_type = 'car_document'
 
 
 class DocTypeTestCase(TestCase):
@@ -134,20 +130,18 @@ class DocTypeTestCase(TestCase):
 
         self.assertEqual(
             CarDocument._doc_type.mapping.to_dict(), {
-                'car_document': {
-                    'properties': {
-                        'name': {
-                            'type': text_type
-                        },
-                        'color': {
-                            'type': text_type
-                        },
-                        'type': {
-                            'type': text_type
-                        },
-                        'price': {
-                            'type': 'double'
-                        }
+                'properties': {
+                    'name': {
+                        'type': text_type
+                    },
+                    'color': {
+                        'type': text_type
+                    },
+                    'type': {
+                        'type': text_type
+                    },
+                    'price': {
+                        'type': 'double'
                     }
                 }
             }
@@ -209,7 +203,6 @@ class DocTypeTestCase(TestCase):
                     'color': doc.prepare_color(None),
                 },
                 '_index': 'car_index',
-                '_type': 'car_document'
             }]
             self.assertEqual(1, mock.call_count)
             self.assertEqual(
@@ -238,7 +231,6 @@ class DocTypeTestCase(TestCase):
                     'color': doc.prepare_color(None),
                 },
                 '_index': 'car_index',
-                '_type': 'car_document'
             },
                 {
                     '_id': car2.pk,
@@ -250,7 +242,6 @@ class DocTypeTestCase(TestCase):
                         'color': doc.prepare_color(None),
                     },
                     '_index': 'car_index',
-                    '_type': 'car_document'
                 }]
             self.assertEqual(1, mock.call_count)
             self.assertEqual(

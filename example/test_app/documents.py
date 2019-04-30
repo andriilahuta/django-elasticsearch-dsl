@@ -19,7 +19,7 @@ html_strip = analyzer(
 )
 
 
-@car.doc_type
+@car.document
 class CarDocument(DocType):
     manufacturer = fields.ObjectField(properties={
         'name': fields.TextField(),
@@ -59,7 +59,7 @@ class CarDocument(DocType):
         return related_instance.car_set.all()
 
 
-@car.doc_type
+@car.document
 class ManufacturerDocument(DocType):
     country = fields.TextField()
 

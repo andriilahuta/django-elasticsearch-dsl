@@ -22,7 +22,5 @@ class Index(DSLIndex):
         registry.register_document(document)
         return document
 
-    doc_type = document
-
     def __str__(self):
         return self._name
