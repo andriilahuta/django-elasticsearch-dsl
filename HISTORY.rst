@@ -3,6 +3,11 @@
 History
 -------
 
+7.0.0 (2019-04-29)
+~~~~~~~~~~~~~~~~~~
+* Update elasticsearch-dsl minimal version
+* Add django 2.1-2.2 support
+
 0.5.1 (2018-11-07)
 ~~~~~~~~~~~~~~~~~~
 * Limit elastsearch-dsl to supported versions
